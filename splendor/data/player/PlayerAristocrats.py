@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from splendor.data.Aristocrat import Aristocrat
 
 
-@dataclass
+@dataclass(slots=True)
 class PlayerAristocrats:
     aristocrats: list[Aristocrat] = field(default_factory=list)
 

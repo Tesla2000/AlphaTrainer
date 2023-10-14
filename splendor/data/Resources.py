@@ -1,7 +1,7 @@
 from dataclasses import dataclass, asdict, astuple
 
 
-@dataclass
+@dataclass(slots=True)
 class Resources:
     red: int = 0
     green: int = 0

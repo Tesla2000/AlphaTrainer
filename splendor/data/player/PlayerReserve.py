@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from splendor.data.Card import Card
 
 
-@dataclass
+@dataclass(slots=True)
 class PlayerReserve:
     cards: tuple[Card] = field(default_factory=tuple)
 

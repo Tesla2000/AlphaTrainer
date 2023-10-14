@@ -9,7 +9,7 @@ from splendor.data.game_setup.generate_aristocrats import generate_aristocrats
 from splendor.data.game_setup.generate_tiers import generate_tiers
 
 
-@dataclass
+@dataclass(slots=True)
 class Board:
     n_players: int = 2
     tiers: list[Tier] = field(init=False, default_factory=generate_tiers)
@@ -21,7 +21,7 @@ class Board:
     def __post_init__(self):
         self.resources = Resources(
             **dict(
-                (resource, {2: 4, 3: 5, 4: 7}[self.n_players])
+                (resource.value, {2: 4, 3: 5, 4: 7}[self.n_players])
                 for resource in Resource.__members__.values()
             )
         )

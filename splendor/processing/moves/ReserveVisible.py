@@ -1,4 +1,4 @@
-from splendor.data.Game import Game
+from splendor.processing._Game import _Game
 from splendor.processing.moves.Reserve import Reserve
 
 
@@ -7,12 +7,12 @@ class ReserveVisible(Reserve):
         super().__init__(tier_index)
         self.index = index
 
-    def perform(self, game: Game) -> None:
+    def perform(self, game: _Game) -> None:
         tier = game.board.tiers[self.tier_index]
         card = tier.pop(self.index)
         self.reserve_card(game, card)
 
-    def is_valid(self, game: Game) -> bool:
+    def is_valid(self, game: _Game) -> bool:
         tier = game.board.tiers[self.tier_index]
         return (
             len(tier.visible) >= self.index

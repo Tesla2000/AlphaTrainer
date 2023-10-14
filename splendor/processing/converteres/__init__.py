@@ -1,0 +1,3 @@
+from splendor.processing.converteres.NumberConverter import NumberConverter
+from splendor.processing.converteres.ResourceConverter import ResourceConverter
+from splendor.processing.converteres.MainConverter import Converter

@@ -4,7 +4,7 @@ from dataclasses import field, dataclass
 from splendor.data.Card import Card
 
 
-@dataclass
+@dataclass(slots=True)
 class Tier:
     hidden: list[Card]
     visible: list[Card] = field(default_factory=list)

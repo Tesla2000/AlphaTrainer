@@ -1,7 +1,7 @@
 from abc import ABC
 
 from splendor.data.Card import Card
-from splendor.data.Game import Game
+from splendor.processing._Game import _Game
 from splendor.processing.moves.Move import Move
 
 
@@ -9,7 +9,7 @@ class Reserve(Move, ABC):
     def __init__(self, tier_index: int):
         self.tier_index = tier_index
 
-    def reserve_card(self, game: Game, card: Card):
+    def reserve_card(self, game: _Game, card: Card):
         current_player = game.current_player
         current_player.reserve.append(card)
         if game.board.resources.gold:
