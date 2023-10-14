@@ -2,13 +2,12 @@ from abc import ABC
 
 from splendor.data.Card import Card
 from splendor.data.Game import Game
-from splendor.data.Tier import Tier
 from splendor.processing.moves.Move import Move
 
 
 class Reserve(Move, ABC):
-    def __init__(self, tier: Tier):
-        self.tier = tier
+    def __init__(self, tier_index: int):
+        self.tier_index = tier_index
 
     def reserve_card(self, game: Game, card: Card):
         current_player = game.current_player

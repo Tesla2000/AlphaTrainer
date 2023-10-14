@@ -17,10 +17,10 @@ class Board:
     def __post_init__(self):
         self.resources = Resources(
             **dict(
-                (resource, 3 + self.n_players)
+                (resource, {2: 4, 3: 5, 4: 7}[self.n_players])
                 for resource in Resource.__members__.values()
             )
         )
         self.resources.gold = 5
         random.shuffle(self.aristocrats)
-        self.aristocrats = self.aristocrats[:4]
+        self.aristocrats = self.aristocrats[: self.n_players + 1]

@@ -5,6 +5,6 @@ class Resource(Enum):
     RED = "red"
     GREEN = "green"
     BLUE = "blue"
-    BROWN = "brown"
+    BLACK = "black"
     WHITE = "white"
     GOLD = "gold"

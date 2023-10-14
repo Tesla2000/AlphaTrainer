@@ -22,3 +22,9 @@ class PlayerReserve:
         card = cards.pop(index)
         self.cards = tuple(cards)
         return card
+
+    def __getitem__(self, item) -> Card:
+        return self.cards.__getitem__(item)
+
+    def __len__(self) -> int:
+        return len(self.cards)
