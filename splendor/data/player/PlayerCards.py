@@ -19,3 +19,6 @@ class PlayerCards:
 
     def append(self, card: Card) -> None:
         self.cards.append(card)
+
+    def __len__(self):
+        return len(self.cards)

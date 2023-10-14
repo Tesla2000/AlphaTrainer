@@ -27,11 +27,18 @@ class Game(_Game):
 
     def next_turn(self) -> None:
         self.players = next(self.player_order)
+        for aristocrat in self.board.aristocrats:
+            if not (self.current_player.resources - aristocrat.cost).lacks():
+                self.board.aristocrats.remove(aristocrat)
+                self.current_player.aristocrats.append(aristocrat)
         if self.current_player.points >= 15 or self._last_turn:
             self._last_turn = True
         self._performed_the_last_move[id(self.current_player)] = self._last_turn
         if all(self._performed_the_last_move.values()):
-            raise GameFinishedException([])
+            winner = max(
+                self.players, key=lambda player: (player.points, -len(player.cards))
+            )
+            raise GameFinishedException(winner)
         self.current_player = self.players[0]
 
     def get_state(self) -> list:
@@ -46,6 +53,7 @@ class Game(_Game):
                 for card in tier[1]
                 for field in card
             ),
+            [],
         )
         for player in self.players:
             state += astuple(player.resources, tuple_factory=list)

@@ -23,7 +23,7 @@ class BuildBoard(Move):
 
     def is_valid(self, game: _Game) -> bool:
         tier = game.board.tiers[self.tier_index]
-        if len(tier.visible) < self.index:
+        if len(tier.visible) <= self.index:
             return False
         card = tier.visible[self.index]
         current_player = game.current_player

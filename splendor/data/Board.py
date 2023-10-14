@@ -21,7 +21,7 @@ class Board:
     def __post_init__(self):
         self.resources = Resources(
             **dict(
-                (resource.value, {2: 4, 3: 5, 4: 7}[self.n_players])
+                (resource.value, {2: 400, 3: 500, 4: 700}[self.n_players])
                 for resource in Resource.__members__.values()
             )
         )

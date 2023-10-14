@@ -15,6 +15,6 @@ class ReserveVisible(Reserve):
     def is_valid(self, game: _Game) -> bool:
         tier = game.board.tiers[self.tier_index]
         return (
-            len(tier.visible) >= self.index
+            len(tier.visible) > self.index
             and len(game.current_player.reserve.cards) < 3
         )
