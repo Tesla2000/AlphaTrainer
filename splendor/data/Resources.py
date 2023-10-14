@@ -6,7 +6,7 @@ class Resources:
     red: int = 0
     green: int = 0
     blue: int = 0
-    brown: int = 0
+    black: int = 0
     white: int = 0
     gold: int = 0
 

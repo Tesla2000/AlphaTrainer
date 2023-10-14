@@ -1,9 +1,10 @@
 import random
-from dataclasses import field
+from dataclasses import field, dataclass
 
 from splendor.data.Card import Card
 
 
+@dataclass
 class Tier:
     hidden: list[Card]
     visible: list[Card] = field(default_factory=list)

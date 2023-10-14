@@ -1,10 +1,14 @@
 from typing import NamedTuple
 
+from splendor.data.Resources import Resources
+
 
 class Aristocrat(NamedTuple):
     points: int
-    cost_red: int = 0
-    cost_green: int = 0
-    cost_blue: int = 0
-    cost_brown: int = 0
-    cost_white: int = 0
+    cost: Resources
+
+    @classmethod
+    def from_text(cls, line: str) -> "Aristocrat":
+        points, white, blue, green, red, black = map(int, line.split(","))
+        cost = Resources(red, green, blue, black, white)
+        return Aristocrat(points, cost)
