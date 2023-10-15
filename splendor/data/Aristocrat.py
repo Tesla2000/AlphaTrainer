@@ -12,3 +12,6 @@ class Aristocrat(NamedTuple):
         points, white, blue, green, red, black = map(int, line.split(","))
         cost = Resources(red, green, blue, black, white)
         return Aristocrat(points, cost)
+
+
+empty_aristocrat = Aristocrat(0, Resources())

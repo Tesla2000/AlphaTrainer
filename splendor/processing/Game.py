@@ -1,10 +1,12 @@
 import operator
 from dataclasses import astuple
 from functools import reduce
-from itertools import combinations, starmap, product
+from itertools import combinations, starmap, product, zip_longest
 
 from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from alpha_trainer.classes.AlphaMove import AlphaMove
+from splendor.data.Aristocrat import empty_aristocrat
+from splendor.data.Card import empty_card
 from splendor.data.Resource import Resource
 from splendor.data.Resources import Resources
 from splendor.processing._Game import _Game
@@ -41,17 +43,26 @@ class Game(_Game):
             raise GameFinishedException(winner)
         self.current_player = self.players[0]
 
-    def get_state(self) -> list:
+    def get_state(self, expected_length=178) -> list:
         state = []
-        points, tiers, aristocrats, resources = astuple(self.board)
-        state += [points, *resources]
+        _, tiers, aristocrats, resources = astuple(self.board)
+        state += list(resources)
+        state += reduce(
+            operator.add,
+            (
+                Converter.convert(field)
+                for tier in tiers
+                for card, _ in zip_longest(tier[1], range(4))
+                for field in (card or empty_card)
+            ),
+            [],
+        )
         state += reduce(
             operator.add,
             (
                 list(Converter.convert(field))
-                for tier in tiers
-                for card in tier[1]
-                for field in card
+                for aristocrat, _ in zip_longest(aristocrats, range(4))
+                for field in (aristocrat or empty_aristocrat)
             ),
             [],
         )
@@ -60,6 +71,8 @@ class Game(_Game):
             state += astuple(player.production, tuple_factory=list)
             state.append(len(player.reserve))
             state.append(player.points)
+        if len(state) != 206:
+            raise ValueError
         return state
 
     def copy(self) -> "AlphaTrainableGame":
@@ -85,3 +98,6 @@ class Game(_Game):
         all_moves += list(map(ReserveTop, range(3)))
         self._all_moves = all_moves
         return all_moves
+
+
+n_moves = 45

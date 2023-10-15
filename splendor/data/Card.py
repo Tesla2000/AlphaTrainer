@@ -15,3 +15,6 @@ class Card(NamedTuple):
         cost = Resources(*tuple(map(int, (red, green, blue, black, white))))
         production = Resource(production)
         return Card(production, cost, int(points))
+
+
+empty_card = Card(Resource.GOLD, Resources(), -1)

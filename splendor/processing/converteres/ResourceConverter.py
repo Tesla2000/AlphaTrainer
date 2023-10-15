@@ -19,4 +19,4 @@ class ResourceConverter(Converter):
     def convert(cls, potential_resource: Any) -> Any:
         if not isinstance(potential_resource, Resource):
             return potential_resource
-        return res_to_list[potential_resource.name]
+        return res_to_list.get(potential_resource.name, (0, 0, 0, 0, 0))
