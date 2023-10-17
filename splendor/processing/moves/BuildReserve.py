@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import asdict
 
-from splendor.data.Resources import Resources
+from splendor.data.BasicResources import BasicResources
 from splendor.processing._Game import _Game
 from splendor.processing.moves.Move import Move
 
@@ -13,7 +13,7 @@ class BuildReserve(Move):
     def perform(self, game: _Game) -> None:
         current_player = game.current_player
         card = current_player.reserve.pop(self.index)
-        not_produced = Resources(
+        not_produced = BasicResources(
             **(Counter(asdict(card.cost)) - Counter(asdict(current_player.production)))
         )
         current_player.resources -= not_produced

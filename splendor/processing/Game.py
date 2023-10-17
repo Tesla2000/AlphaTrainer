@@ -1,5 +1,5 @@
 import operator
-from dataclasses import astuple
+from dataclasses import astuple, fields
 from functools import reduce
 from itertools import combinations, starmap, product, zip_longest
 
@@ -7,13 +7,12 @@ from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from alpha_trainer.classes.AlphaMove import AlphaMove
 from splendor.data.Aristocrat import empty_aristocrat
 from splendor.data.Card import empty_card
-from splendor.data.Resource import Resource
-from splendor.data.Resources import Resources
+from splendor.data.BasicResources import BasicResources
 from splendor.processing._Game import _Game
 from splendor.processing.converteres import Converter
 from splendor.processing.moves.BuildBoard import BuildBoard
 from splendor.processing.moves.BuildReserve import BuildReserve
-from splendor.processing.moves.GrabResource import GrabResource
+from splendor.processing.moves.GrabThreeResource import GrabThreeResource
 from splendor.processing.moves.ReserveTop import ReserveTop
 from splendor.processing.moves.ReserveVisible import ReserveVisible
 
@@ -43,7 +42,7 @@ class Game(_Game):
             raise GameFinishedException(winner)
         self.current_player = self.players[0]
 
-    def get_state(self, expected_length=178) -> list:
+    def get_state(self, expected_length=276) -> list:
         state = []
         _, tiers, aristocrats, resources = astuple(self.board)
         state += list(resources)
@@ -69,9 +68,22 @@ class Game(_Game):
         for player in self.players:
             state += astuple(player.resources, tuple_factory=list)
             state += astuple(player.production, tuple_factory=list)
-            state.append(len(player.reserve))
+            if player != self.current_player:
+                state.append(len(player.reserve))
+            else:
+                state += reduce(
+                    operator.add,
+                    (
+                        Converter.convert(field)
+                        for card, _ in zip_longest(
+                            self.current_player.reserve.cards, range(3)
+                        )
+                        for field in (card or empty_card)
+                    ),
+                    [],
+                )
             state.append(player.points)
-        if len(state) != 206:
+        if len(state) != expected_length:
             raise ValueError
         return state
 
@@ -82,15 +94,14 @@ class Game(_Game):
     def all_moves(self) -> list[AlphaMove]:
         if self._all_moves:
             return self._all_moves
-        valid_resources = tuple(resource for resource in Resource.__members__.values())
-        combos = combinations([{resource.value: 1} for resource in valid_resources], 3)
+        combos = combinations([{field.name: 1} for field in fields(BasicResources)], 3)
         all_moves = list(
-            GrabResource(Resources(**res_1, **res_2, **res_3))
+            GrabThreeResource(BasicResources(**res_1, **res_2, **res_3))
             for res_1, res_2, res_3 in combos
         )
         all_moves += list(
-            GrabResource(Resources(**{resource.value: 2}))
-            for resource in valid_resources
+            GrabThreeResource(BasicResources(**{field.name: 2}))
+            for field in fields(BasicResources)
         )
         all_moves += list(starmap(BuildBoard, product(range(3), range(4))))
         all_moves += list(map(BuildReserve, range(3)))

@@ -1,17 +1,17 @@
-from typing import NamedTuple
+from splendor.data.BasicResources import BasicResources
+from dataclasses import dataclass
 
-from splendor.data.Resources import Resources
 
-
-class Aristocrat(NamedTuple):
+@dataclass(slots=True)
+class Aristocrat:
     points: int
-    cost: Resources
+    cost: BasicResources
 
     @classmethod
     def from_text(cls, line: str) -> "Aristocrat":
         points, white, blue, green, red, black = map(int, line.split(","))
-        cost = Resources(red, green, blue, black, white)
+        cost = BasicResources(red, green, blue, black, white)
         return Aristocrat(points, cost)
 
 
-empty_aristocrat = Aristocrat(0, Resources())
+empty_aristocrat = Aristocrat(0, BasicResources())

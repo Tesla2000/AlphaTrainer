@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import asdict
 
-from splendor.data.Resources import Resources
+from splendor.data.BasicResources import BasicResources
 from splendor.processing._Game import _Game
 from splendor.processing.moves.Move import Move
 
@@ -15,7 +15,7 @@ class BuildBoard(Move):
         current_player = game.current_player
         tier = game.board.tiers[self.tier_index]
         card = tier.pop(self.index)
-        not_produced = Resources(
+        not_produced = BasicResources(
             **(Counter(asdict(card.cost)) - Counter(asdict(current_player.production)))
         )
         current_player.resources -= not_produced

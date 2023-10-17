@@ -1,22 +1,12 @@
-from dataclasses import astuple
+from abc import ABC
 
-from splendor.processing._Game import _Game
-from splendor.data.Resources import Resources
+from splendor.data.BasicResources import BasicResources
 from splendor.processing.moves.Move import Move
 
 
-class GrabResource(Move):
-    def __init__(self, resources: Resources):
+class GrabResource(Move, ABC):
+    def __init__(self, resources: BasicResources):
         self.resources = resources
-
-    def perform(self, game: _Game) -> None:
-        game.board.resources -= self.resources
-        game.current_player.resources += self.resources
-
-    def is_valid(self, game: _Game) -> bool:
-        # if sum(astuple(game.current_player.resources)) + sum(astuple(self.resources)) > 10:
-        #     return False
-        return not (game.board.resources - self.resources).lacks()
 
     def __repr__(self):
         return self.resources.__repr__()

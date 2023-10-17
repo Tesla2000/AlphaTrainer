@@ -1,20 +1,19 @@
-from typing import NamedTuple
-
-from splendor.data.Resource import Resource
-from splendor.data.Resources import Resources
+from splendor.data.BasicResources import BasicResources
+from dataclasses import dataclass
 
 
-class Card(NamedTuple):
-    production: Resource
-    cost: Resources
+@dataclass(slots=True)
+class Card:
+    production: BasicResources
+    cost: BasicResources
     points: int = 0
 
     @classmethod
     def from_text(cls, line: str) -> "Card":
         tier, production, points, name, white, blue, green, red, black = line.split(",")
-        cost = Resources(*tuple(map(int, (red, green, blue, black, white))))
-        production = Resource(production)
+        cost = BasicResources(*tuple(map(int, (red, green, blue, black, white))))
+        production = BasicResources(**{production: 1})
         return Card(production, cost, int(points))
 
 
-empty_card = Card(Resource.GOLD, Resources(), -1)
+empty_card = Card(BasicResources(), BasicResources(), -1)

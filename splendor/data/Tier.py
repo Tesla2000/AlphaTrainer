@@ -1,7 +1,7 @@
 import random
 from dataclasses import field, dataclass
 
-from splendor.data.Card import Card
+from splendor.data.Card import Card, empty_card
 
 
 @dataclass(slots=True)
@@ -18,4 +18,6 @@ class Tier:
         card = self.visible.pop(index)
         if self.hidden:
             self.visible.append(self.hidden.pop())
+        else:
+            self.visible.append(empty_card)
         return card
