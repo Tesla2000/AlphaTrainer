@@ -3,13 +3,12 @@ from dataclasses import astuple, fields
 from functools import reduce
 from itertools import combinations, starmap, product, zip_longest
 
-from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from alpha_trainer.classes.AlphaMove import AlphaMove
-from splendor.data.Aristocrat import empty_aristocrat
-from splendor.data.Card import empty_card
+from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from splendor.data.BasicResources import BasicResources
+from splendor.data.Card import empty_card
 from splendor.processing._Game import _Game
-from splendor.processing.converteres import Converter
+from splendor.processing.flatter_recursely import flatter_recursively
 from splendor.processing.moves.BuildBoard import BuildBoard
 from splendor.processing.moves.BuildReserve import BuildReserve
 from splendor.processing.moves.GrabThreeResource import GrabThreeResource
@@ -43,45 +42,14 @@ class Game(_Game):
         self.current_player = self.players[0]
 
     def get_state(self, expected_length=276) -> list:
-        state = []
-        _, tiers, aristocrats, resources = astuple(self.board)
-        state += list(resources)
-        state += reduce(
-            operator.add,
-            (
-                Converter.convert(field)
-                for tier in tiers
-                for card, _ in zip_longest(tier[1], range(4))
-                for field in (card or empty_card)
-            ),
-            [],
-        )
-        state += reduce(
-            operator.add,
-            (
-                list(Converter.convert(field))
-                for aristocrat, _ in zip_longest(aristocrats, range(4))
-                for field in (aristocrat or empty_aristocrat)
-            ),
-            [],
-        )
+        state = flatter_recursively(astuple(self.board))
         for player in self.players:
             state += astuple(player.resources, tuple_factory=list)
             state += astuple(player.production, tuple_factory=list)
             if player != self.current_player:
                 state.append(len(player.reserve))
             else:
-                state += reduce(
-                    operator.add,
-                    (
-                        Converter.convert(field)
-                        for card, _ in zip_longest(
-                            self.current_player.reserve.cards, range(3)
-                        )
-                        for field in (card or empty_card)
-                    ),
-                    [],
-                )
+                state += flatter_recursively(astuple(self.current_player.reserve))
             state.append(player.points)
         if len(state) != expected_length:
             raise ValueError

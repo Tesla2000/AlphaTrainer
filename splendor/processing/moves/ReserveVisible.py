@@ -1,3 +1,4 @@
+from splendor.data.Card import empty_card
 from splendor.processing._Game import _Game
 from splendor.processing.moves.Reserve import Reserve
 
@@ -14,7 +15,6 @@ class ReserveVisible(Reserve):
 
     def is_valid(self, game: _Game) -> bool:
         tier = game.board.tiers[self.tier_index]
-        return (
-            len(tier.visible) > self.index
-            and len(game.current_player.reserve.cards) < 3
-        )
+        if tier.visible[self.index] == empty_card:
+            return False
+        return empty_card in game.current_player.reserve.cards

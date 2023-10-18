@@ -2,6 +2,7 @@ from collections import Counter
 from dataclasses import asdict
 
 from splendor.data.BasicResources import BasicResources
+from splendor.data.Card import empty_card
 from splendor.processing._Game import _Game
 from splendor.processing.moves.Move import Move
 
@@ -23,7 +24,7 @@ class BuildBoard(Move):
 
     def is_valid(self, game: _Game) -> bool:
         tier = game.board.tiers[self.tier_index]
-        if len(tier.visible) <= self.index:
+        if tier.visible[self.index] == empty_card:
             return False
         card = tier.visible[self.index]
         current_player = game.current_player

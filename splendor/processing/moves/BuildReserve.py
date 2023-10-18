@@ -2,6 +2,7 @@ from collections import Counter
 from dataclasses import asdict
 
 from splendor.data.BasicResources import BasicResources
+from splendor.data.Card import empty_card
 from splendor.processing._Game import _Game
 from splendor.processing.moves.Move import Move
 
@@ -21,7 +22,7 @@ class BuildReserve(Move):
 
     def is_valid(self, game: _Game) -> bool:
         current_player = game.current_player
-        if len(current_player.reserve) <= self.index:
+        if current_player.reserve[self.index] == empty_card:
             return False
         card = current_player.reserve[self.index]
         return not (

@@ -1,26 +1,29 @@
 from dataclasses import dataclass, field
 
-from splendor.data.Card import Card
+from splendor.data.Card import Card, empty_card
 
 
 @dataclass(slots=True)
 class PlayerReserve:
-    cards: tuple[Card] = field(default_factory=tuple)
+    cards: list[Card] = field(
+        default_factory=lambda: [empty_card, empty_card, empty_card]
+    )
 
     def can_add(self) -> bool:
-        return len(self.cards) < 3
+        return empty_card in self.cards
 
     def append(self, card: Card) -> None:
         if not self.can_add():
             raise ValueError(f"Can't add card to reserve {self.cards}")
-        cards = list(self.cards)
-        cards.append(card)
-        self.cards = tuple(cards)
+        empty_index = self.cards.index(empty_card)
+        self.cards[empty_index] = card
 
     def pop(self, index: int) -> Card:
         cards = list(self.cards)
-        card = cards.pop(index)
-        self.cards = tuple(cards)
+        card = cards[index]
+        if card == empty_card:
+            raise ValueError
+        cards[index] = empty_card
         return card
 
     def __getitem__(self, item) -> Card:
