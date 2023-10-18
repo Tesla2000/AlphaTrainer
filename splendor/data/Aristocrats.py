@@ -1,6 +1,6 @@
-from splendor.data.Aristocrat import Aristocrat, empty_aristocrat
-from splendor.data.BasicResources import BasicResources
 from dataclasses import dataclass
+
+from splendor.data.Aristocrat import Aristocrat, empty_aristocrat
 
 
 @dataclass(slots=True)

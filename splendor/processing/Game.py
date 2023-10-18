@@ -1,12 +1,12 @@
-import operator
-from dataclasses import astuple, fields
-from functools import reduce
-from itertools import combinations, starmap, product, zip_longest
+from dataclasses import astuple, fields, asdict
+from itertools import combinations, starmap, product, cycle
+from typing import Iterable
 
 from alpha_trainer.classes.AlphaMove import AlphaMove
 from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from splendor.data.BasicResources import BasicResources
-from splendor.data.Card import empty_card
+from splendor.data.Board import Board
+from splendor.data.player.Player import Player
 from splendor.processing._Game import _Game
 from splendor.processing.flatter_recursely import flatter_recursively
 from splendor.processing.moves.BuildBoard import BuildBoard
@@ -17,9 +17,15 @@ from splendor.processing.moves.ReserveVisible import ReserveVisible
 
 
 class Game(_Game):
+    _last_turn: bool
+    _all_moves: list[AlphaMove]
+    _performed_the_last_move: dict[int, bool]
+
     def __init__(self, n_players: int = 2):
         super().__init__(n_players)
-        self._all_moves = None
+        self._init()
+
+    def _init(self):
         self._performed_the_last_move = dict(
             (id(player), False) for player in self.players
         )
@@ -55,8 +61,10 @@ class Game(_Game):
             raise ValueError
         return state
 
-    def copy(self) -> "AlphaTrainableGame":
-        pass
+    def copy(self) -> "Game":
+        board = asdict(self.board)
+        players = map(asdict, self.players)
+        return Game.from_dict(board, players)
 
     @property
     def all_moves(self) -> list[AlphaMove]:
@@ -77,6 +85,17 @@ class Game(_Game):
         all_moves += list(map(ReserveTop, range(3)))
         self._all_moves = all_moves
         return all_moves
+
+    @classmethod
+    def from_dict(cls, board: dict, players: Iterable[dict]) -> "Game":
+        game = object.__new__(Game)
+        game.board = Board(**board)
+        players = list(Player(**player_state) for player_state in players)
+        game.players = players
+        game.player_order = sliding_window(cycle(players), len(players))
+        game.current_player = players[0]
+        game._init()
+        return game
 
 
 n_moves = 45
