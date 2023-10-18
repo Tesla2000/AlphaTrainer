@@ -10,7 +10,7 @@ from alpha_trainer.classes.AlphaMove import AlphaMove
 from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
 from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from alpha_trainer.exceptions.NoPossibleMoveException import NoPossibleMoveException
-from splendor.processing.Game import Game, n_moves
+from PySplendor import Game
 from train_model import train_to_predict_move
 
 
