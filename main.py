@@ -1,16 +1,15 @@
 from collections import defaultdict
 from pathlib import Path
-from statistics import mean
 
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from tqdm import tqdm
 
+from PySplendor.Game import n_moves, Game
 from alpha_trainer.classes.AlphaMove import AlphaMove
 from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
 from alpha_trainer.exceptions.GameFinishedException import GameFinishedException
 from alpha_trainer.exceptions.NoPossibleMoveException import NoPossibleMoveException
-from PySplendor import Game
 from train_model import train_to_predict_move
 
 
@@ -89,7 +88,6 @@ def save_results(
         game_lengths.append(len(y))
         for state, result in zip(x, y):
             print(f"{result},{','.join(map(str, map(int, state)))}", file=output)
-    print(mean(game_lengths))
     output.close()
 
 

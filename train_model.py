@@ -4,7 +4,7 @@ from typing import Optional
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 
-from splendor.processing.Game import n_moves
+from PySplendor.Game import n_moves
 
 
 def train(x, y) -> DecisionTreeClassifier:
