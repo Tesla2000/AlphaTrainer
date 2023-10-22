@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 
-
-class _AlphaTrainableGame(ABC):
-    pass
+from alpha_trainer.classes.AlphaTrainableGamePrototype import (
+    AlphaTrainableGamePrototype,
+)
 
 
 class AlphaMove(ABC):
     @abstractmethod
-    def perform(self, game: _AlphaTrainableGame) -> None:
+    def perform(self, game: AlphaTrainableGamePrototype) -> AlphaTrainableGamePrototype:
         pass
 
     @abstractmethod
-    def is_valid(self, game: _AlphaTrainableGame) -> bool:
+    def is_valid(self, game: AlphaTrainableGamePrototype) -> bool:
         pass

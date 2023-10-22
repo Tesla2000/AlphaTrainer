@@ -1,0 +1,2 @@
+class AlphaPlayer:
+    id: int
