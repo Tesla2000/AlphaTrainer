@@ -3,8 +3,8 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class AlphaGameResult:
-    value: int
+    value: float
 
     def __post_init__(self):
-        if self.value not in (-1, 0, 1):
-            raise ValueError
+        if not -1 <= self.value <= 1:
+            raise ValueError("Result must be in -1, 1 range")

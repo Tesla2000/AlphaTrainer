@@ -2,7 +2,6 @@ import random
 from dataclasses import dataclass, field
 from math import sqrt, log
 
-from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
 from alpha_trainer.classes.AlphaPlayer import AlphaPlayer
 from alpha_trainer.classes.AlphaTrainableGamePrototype import (
     AlphaTrainableGamePrototype,
@@ -42,17 +41,20 @@ def expand(node: Node):
     return random.choice(node.children)
 
 
-def simulate(node: Node, player: AlphaPlayer):
+def simulate(node: Node) -> Node:
     new_node = Node(node.state.copy())
     while not new_node.state.is_terminal():
         action = random.choice(tuple(new_node.state.get_possible_actions()))
         node.state = action.perform(new_node.state)
         new_node.state.next_turn()
-    return new_node.state.get_result(player)
+    return new_node
 
 
-def backpropagate(node: Node, result: AlphaGameResult):
+def backpropagate(node: Node):
+    end_results = dict(
+        (player, node.state.get_result(player)) for player in node.state.players
+    )
     while node:
         node.visits += 1
-        node.value += result.value
+        node.value += end_results[node.state.current_player]
         node = node.parent

@@ -1,7 +1,6 @@
 from abc import abstractmethod
 from typing import Generator
 
-from GameLogic.MCTS import Node, select, expand, simulate, backpropagate
 from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
 from alpha_trainer.classes.AlphaMove import AlphaMove
 from alpha_trainer.classes.AlphaPlayer import AlphaPlayer
@@ -37,16 +36,3 @@ class AlphaTrainableGame(AlphaTrainableGamePrototype):
     @abstractmethod
     def get_state(self):
         pass
-
-    def get_best_state(self, iterations: int) -> "AlphaTrainableGamePrototype":
-        root = Node(self)
-        current_player = self.current_player
-        for _ in range(iterations):
-            node = select(root)
-            if not node.state.is_terminal():
-                node = expand(node)
-                result = simulate(node, current_player)
-            else:
-                result = node.state.get_result(current_player)
-            backpropagate(node, result)
-        return max(root.children, key=lambda n: n.visits).state
