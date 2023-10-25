@@ -2,7 +2,6 @@ import random
 from dataclasses import dataclass, field
 from math import sqrt, log
 
-from alpha_trainer.classes.AlphaPlayer import AlphaPlayer
 from alpha_trainer.classes.AlphaTrainableGamePrototype import (
     AlphaTrainableGamePrototype,
 )
@@ -24,7 +23,7 @@ def select(node: Node):
 
 
 def uct(node: Node):
-    if node.visits == 0:
+    if node is None or node.visits == 0:
         return float("inf")
     return (node.value / node.visits) + 1.0 * sqrt(
         log(node.parent.visits) / node.visits
@@ -42,19 +41,28 @@ def expand(node: Node):
 
 
 def simulate(node: Node) -> Node:
-    new_node = Node(node.state.copy())
-    while not new_node.state.is_terminal():
-        action = random.choice(tuple(new_node.state.get_possible_actions()))
-        node.state = action.perform(new_node.state)
+    while not node.state.is_terminal():
+        new_node = Node(node.state.copy(), node)
+        if not (actions := tuple(node.state.get_possible_actions())):
+            return node
+        if not node.children:
+            node.children = len(actions) * [None]
+        index = random.randint(0, len(actions) - 1)
+        if node.children[index]:
+            return node.children[index]
+        action = actions[index]
+        new_node.state = action.perform(new_node.state)
         new_node.state.next_turn()
-    return new_node
+        node.children[index] = new_node
+        node = new_node
+    return node
 
 
 def backpropagate(node: Node):
     end_results = dict(
-        (player, node.state.get_result(player)) for player in node.state.players
+        (player.id, node.state.get_result(player)) for player in node.state.players
     )
     while node:
         node.visits += 1
-        node.value += end_results[node.state.current_player]
+        node.value += end_results[node.state.current_player.id].value
         node = node.parent
