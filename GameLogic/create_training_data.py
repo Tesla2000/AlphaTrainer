@@ -20,7 +20,7 @@ def save_game_results(
     game_lengths = []
     for _ in range(n_games):
         x, y = [], []
-        results = simulate_games(
+        simulate_games(
             n_simulations, n_move_to_consider_state, model, model_decision_weight
         )
         game_lengths.append(len(y))
