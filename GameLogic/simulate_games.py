@@ -1,4 +1,5 @@
 from sklearn.tree import DecisionTreeClassifier
+from tqdm import tqdm
 
 from GameLogic.MCTS import Node, simulate, backpropagate
 from PySplendor.Game import Game
@@ -12,7 +13,18 @@ def simulate_games(
 ):
     game = Game()
     root = Node(game)
-    for _ in range(iterations):
+    for _ in tqdm(range(iterations), desc="Processing", unit="iteration"):
         node = simulate(root)
         backpropagate(node)
-    pass
+    return tuple(get_all_valid_nodes(root, n_move_to_consider_state))
+
+
+def get_all_valid_nodes(node: Node, n_move_to_consider_state: int) -> Node:
+    if not node:
+        return
+    if node.visits >= n_move_to_consider_state:
+        yield node
+        for child_node in node.children:
+            for n in get_all_valid_nodes(child_node, n_move_to_consider_state):
+                yield n
+    return
