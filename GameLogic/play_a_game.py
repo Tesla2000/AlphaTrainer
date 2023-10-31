@@ -18,7 +18,7 @@ def play_a_game(
         game = game.get_best_state(10)
         if game.is_terminal():
             for player in game.players:
-                result = game.get_result(player).value
+                result = game.get_results().value
                 player_id = player.id
                 x += states[player_id]
                 y += len(states[player_id]) * [result]

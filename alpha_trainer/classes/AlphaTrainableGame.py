@@ -9,6 +9,9 @@ if TYPE_CHECKING:
     from alpha_trainer.classes.AlphaMove import AlphaMove
 
 
+AlphaGameResults = dict[int, AlphaGameResult]
+
+
 class AlphaTrainableGame(ABC):
     current_player: Any
     players: list
@@ -20,7 +23,7 @@ class AlphaTrainableGame(ABC):
         pass
 
     @abstractmethod
-    def get_possible_actions(self) -> Generator["AlphaMove", None, None]:
+    def get_possible_actions(self) -> Generator[AlphaMove, None, None]:
         pass
 
     @abstractmethod
@@ -32,7 +35,7 @@ class AlphaTrainableGame(ABC):
         pass
 
     @abstractmethod
-    def get_result(self, player: AlphaPlayer) -> AlphaGameResult:
+    def get_results(self) -> AlphaGameResults:
         pass
 
     @abstractmethod

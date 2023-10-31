@@ -23,7 +23,7 @@ def main():
     #     current_model = train_to_predict_move(data)
     for i in range(n_files, n_files + 100):
         file_name = f"results_{i}.csv"
-        save_game_results(1, 10000, 10, file_name, current_model, 1 + i / 10)
+        save_game_results(1, 10_000, file_name, current_model, 1 + i / 10)
         data = np.append(
             data,
             np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int),
