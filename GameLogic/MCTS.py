@@ -2,6 +2,7 @@ import random
 from dataclasses import dataclass, field
 from itertools import compress
 from math import sqrt, log, exp
+from typing import Optional
 
 from alpha_trainer.classes.AlphaMove import AlphaMove
 from alpha_trainer.classes.AlphaTrainableGamePrototype import (
@@ -13,7 +14,7 @@ from alpha_trainer.classes.AlphaTrainableGamePrototype import (
 class Node:
     state: AlphaTrainableGamePrototype
     parent: "Node" = field(default=None)
-    children: list["Node"] = field(init=False, default_factory=list)
+    children: list[Optional["Node"]] = field(init=False, default_factory=list)
     visits: int = field(init=False, default=0)
     value: int = field(init=False, default=0)
     terminal: bool = field(init=False, default=False)
@@ -44,7 +45,7 @@ def expand(node: Node):
     return random.choice(node.children)
 
 
-def score_position(node: Node) -> float:
+def score_position(node: Optional[Node]) -> float:
     if node is None:
         return 1.0
     return exp(node.value / node.visits)
@@ -65,7 +66,7 @@ def simulate(node: Node) -> Node:
             node.terminal = True
             return node
         action = random.choices(
-            actions, weights=map(score_position, node.children), k=1
+            actions, weights=tuple(map(score_position, node.children)), k=1
         )[0]
         index = actions.index(action)
         if node.children[index]:

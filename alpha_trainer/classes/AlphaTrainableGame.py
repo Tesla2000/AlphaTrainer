@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Generator
+from typing import Generator, Sequence
 
 from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
 from alpha_trainer.classes.AlphaMove import AlphaMove
@@ -11,7 +11,7 @@ from alpha_trainer.classes.AlphaTrainableGamePrototype import (
 
 class AlphaTrainableGame(AlphaTrainableGamePrototype):
     current_player: AlphaPlayer
-    players: list[AlphaPlayer]
+    players: Sequence[AlphaPlayer]
 
     @abstractmethod
     def copy(self) -> "AlphaTrainableGame":
