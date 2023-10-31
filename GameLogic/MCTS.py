@@ -5,14 +5,14 @@ from math import sqrt, log, exp
 from typing import Optional
 
 from alpha_trainer.classes.AlphaMove import AlphaMove
-from alpha_trainer.classes.AlphaTrainableGamePrototype import (
-    AlphaTrainableGamePrototype,
+from alpha_trainer.classes.AlphaTrainableGame import (
+    AlphaTrainableGame,
 )
 
 
 @dataclass
 class Node:
-    state: AlphaTrainableGamePrototype
+    state: AlphaTrainableGame
     parent: "Node" = field(default=None)
     children: list[Optional["Node"]] = field(init=False, default_factory=list)
     visits: int = field(init=False, default=0)
@@ -71,7 +71,6 @@ def simulate(node: Node) -> Node:
         index = actions.index(action)
         if node.children[index]:
             return node.children[index]
-        action = actions[index]
         new_node.state = action.perform(new_node.state)
         new_node.state.next_turn()
         node.children[index] = new_node

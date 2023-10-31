@@ -1,24 +1,26 @@
-from abc import abstractmethod
-from typing import Generator, Sequence
+from abc import abstractmethod, ABC
+from typing import Generator, Sequence, Any, TYPE_CHECKING, Self
 
 from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
-from alpha_trainer.classes.AlphaMove import AlphaMove
+
 from alpha_trainer.classes.AlphaPlayer import AlphaPlayer
-from alpha_trainer.classes.AlphaTrainableGamePrototype import (
-    AlphaTrainableGamePrototype,
-)
+
+if TYPE_CHECKING:
+    from alpha_trainer.classes.AlphaMove import AlphaMove
 
 
-class AlphaTrainableGame(AlphaTrainableGamePrototype):
+class AlphaTrainableGame(ABC):
+    current_player: Any
+    players: list
     current_player: AlphaPlayer
     players: Sequence[AlphaPlayer]
 
     @abstractmethod
-    def copy(self) -> "AlphaTrainableGame":
+    def copy(self) -> Self:
         pass
 
     @abstractmethod
-    def get_possible_actions(self) -> Generator[AlphaMove, None, None]:
+    def get_possible_actions(self) -> Generator["AlphaMove", None, None]:
         pass
 
     @abstractmethod

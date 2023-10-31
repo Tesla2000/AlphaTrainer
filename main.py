@@ -8,7 +8,9 @@ from train_model import train_to_predict_move
 
 def main():
     max_n_sample = 1_000_000
-    n_files = len(tuple(Path("results").iterdir()))
+    results_dir = Path("results")
+    results_dir.mkdir(exist_ok=True)
+    n_files = len(tuple(results_dir.iterdir()))
     current_model = None
     data = []
     # if n_files:

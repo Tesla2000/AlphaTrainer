@@ -11,7 +11,7 @@ def simulate_games(
     model: DecisionTreeClassifier = None,
     model_decision_weight: float = 1,
 ):
-    game = Game()
+    game = Game.create()
     root = Node(game)
     for _ in tqdm(range(iterations), desc="Processing", unit="iteration"):
         node = simulate(root)
