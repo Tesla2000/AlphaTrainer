@@ -1,7 +1,6 @@
 from typing import Type
 
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
 
 from GameLogic.MCTS import mcts_search
 from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
@@ -11,9 +10,8 @@ StatesAndResults = dict[int, np.array]
 
 def simulate_game(
     game_class: Type[AlphaTrainableGame],
-    num_simulations: int,
-    model: DecisionTreeClassifier = None,
-    model_decision_weight: float = 1,
+    num_simulations: int = None,
+    model=None,
     game_args: tuple = None,
     game_kwargs: dict = None,
 ) -> StatesAndResults:
