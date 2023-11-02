@@ -1,11 +1,14 @@
 from pathlib import Path
+from typing import Type
 
 from sklearn.tree import DecisionTreeClassifier
 
 from GameLogic.simulate_games import simulate_game
+from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
 
 
 def save_game_results(
+    game_class: Type[AlphaTrainableGame],
     n_games: int,
     n_simulations: int,
     file_name: str,
@@ -17,10 +20,10 @@ def save_game_results(
     results_file = results_folder / file_name
     output = results_file.open("w")
     for _ in range(n_games):
-        nodes = simulate_game(n_simulations, model, model_decision_weight)
-        for node in nodes:
+        results = simulate_game(game_class, n_simulations, model, model_decision_weight)
+        for state, result in results.items():
             print(
-                f"{node.value / node.visits},{','.join(map(str, map(int, node.state.get_state())))}",
+                f"{result},{','.join(map(str, map(int, state)))}",
                 file=output,
             )
     output.close()

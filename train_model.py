@@ -1,4 +1,3 @@
-from itertools import compress
 from typing import Optional
 
 import numpy as np
@@ -20,8 +19,8 @@ def train_to_predict_win(data: np.array) -> DecisionTreeClassifier:
 
 
 def train_to_predict_move(data: np.array) -> Optional[DecisionTreeClassifier]:
-    y = np.array(tuple(compress(data[:, -1], data[:, 0])))
-    x = np.array(tuple(compress(data[:, 1:-1], data[:, 0])))
+    y = data[0]
+    x = data[1:]
     if len(np.unique(y)) != n_moves:
         return
     return train(x, y)

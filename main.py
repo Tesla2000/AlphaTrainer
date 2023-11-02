@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 
 from GameLogic.create_training_data import save_game_results
+from PySplendor.Game import Game
 from train_model import train_to_predict_move
 
 
@@ -21,13 +22,13 @@ def main():
     #         )
     #     )
     #     current_model = train_to_predict_move(data)
+    game_class = Game
     for i in range(n_files, n_files + 100):
         file_name = f"results_{i}.csv"
-        save_game_results(1, 10_000, file_name, current_model, 1 + i / 10)
+        save_game_results(game_class, 1, 10_000, file_name, current_model, 1 + i / 10)
         data = np.append(
             data,
             np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int),
-            axis=0,
         )[:max_n_sample]
         current_model = train_to_predict_move(data)
 

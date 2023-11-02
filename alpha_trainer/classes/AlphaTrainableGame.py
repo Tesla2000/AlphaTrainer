@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Generator, Sequence, Any, TYPE_CHECKING, Self
+from typing import Sequence, Any, TYPE_CHECKING, Self
 
 from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
 
@@ -23,11 +23,11 @@ class AlphaTrainableGame(ABC):
         pass
 
     @abstractmethod
-    def get_possible_actions(self) -> Generator[AlphaMove, None, None]:
+    def perform(self, action: "AlphaMove") -> Self:
         pass
 
     @abstractmethod
-    def next_turn(self) -> None:
+    def get_possible_actions(self) -> list["AlphaMove"]:
         pass
 
     @abstractmethod
@@ -39,5 +39,5 @@ class AlphaTrainableGame(ABC):
         pass
 
     @abstractmethod
-    def get_state(self):
+    def get_state(self) -> tuple:
         pass
