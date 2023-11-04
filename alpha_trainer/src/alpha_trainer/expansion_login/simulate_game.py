@@ -1,12 +1,9 @@
 from typing import Type, Callable
-
-import numpy as np
-
 from .mcts_search import mcts_search
 from .model_prediction import model_prediction
 from .. import AlphaTrainableGame, AlphaMove
 
-StatesAndResults = dict[np.array, float]
+StatesAndResults = dict[tuple, float]
 
 
 def simulate_game(
@@ -36,7 +33,7 @@ def simulate_game(
 
 
 def score_positions(
-    game: AlphaTrainableGame, states: dict[np.array, int]
+    game: AlphaTrainableGame, states: dict[tuple, int]
 ) -> StatesAndResults:
     results = game.get_results()
     return dict(
