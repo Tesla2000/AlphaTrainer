@@ -1,33 +1,73 @@
+from itertools import count
 from pathlib import Path
+from statistics import mean
 
 import numpy as np
+from IPython import display
+from matplotlib import pyplot as plt
+from sklearn.ensemble import RandomForestClassifier
+from tqdm import tqdm
 
-from GameLogic.save_game_results import save_game_results
+from PySplendor.Game import Game
+from create_training_data import save_game_results
 from train_model import train_to_predict_move
 
 
+def plot(scores, mean_scores):
+    display.clear_output(wait=True)
+    display.display(plt.gcf())
+    plt.clf()
+    plt.title("Training...")
+    plt.xlabel("Number of Games")
+    plt.ylabel("Score")
+    plt.plot(scores)
+    plt.plot(mean_scores)
+    plt.ylim(ymin=min(scores))
+    plt.text(len(scores) - 1, scores[-1], str(scores[-1]))
+    plt.text(len(mean_scores) - 1, mean_scores[-1], str(mean_scores[-1]))
+    plt.show(block=False)
+    plt.pause(0.1)
+
+
 def main():
-    max_n_sample = 1_000_000
-    n_files = len(tuple(Path("results").iterdir()))
-    current_model = None
-    data = []
-    # if n_files:
-    #     data = np.concatenate(
-    #         tuple(
-    #             np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int)
-    #             for i in range(n_files)
-    #         )
-    #     )
-    #     current_model = train_to_predict_move(data)
-    for i in range(n_files, n_files + 100):
+    results_dir = Path("results")
+    results_dir.mkdir(exist_ok=True)
+    files = tuple(results_dir.iterdir())
+    model = RandomForestClassifier()
+    scores, mean_scores, data = [], [], []
+    max_number = 0
+    if files:
+        data = list(
+            np.loadtxt(file, delimiter=",", dtype=int)
+            for file in files
+            if file.stat().st_size
+        )
+        model, score = train_to_predict_move(model, data)
+        scores.append(score)
+        max_number = int(
+            "".join(
+                filter(
+                    str.isnumeric,
+                    max(files, key=lambda file: (len(file.name), file.name)).name,
+                )
+            )
+        )
+    game_class = Game
+    plt.ion()
+
+    for i in tqdm(count(max_number + 1)):
         file_name = f"results_{i}.csv"
-        save_game_results(1000, file_name, current_model, 1 + i / 10)
-        data = np.append(
-            data,
-            np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int),
-            axis=0,
-        )[:max_n_sample]
-        current_model = train_to_predict_move(data)
+        save_game_results(
+            game_class,
+            file_name,
+            model=model if hasattr(model, "estimators_") else None,
+            n_simulations=50,
+        )
+        data.append(np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int))
+        model, score = train_to_predict_move(model, data)
+        scores.append(score)
+        mean_scores.append(mean(scores))
+        plot(scores, mean_scores)
 
 
 if __name__ == "__main__":

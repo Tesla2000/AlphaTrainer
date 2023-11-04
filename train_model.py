@@ -1,27 +1,13 @@
-from itertools import compress
-from typing import Optional
-
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
-
-from PySplendor.Game import n_moves
+from sklearn.model_selection import train_test_split
 
 
-def train(x, y) -> DecisionTreeClassifier:
-    clf = DecisionTreeClassifier()
-    clf.fit(x, y)
-    return clf
-
-
-def train_to_predict_win(data: np.array) -> DecisionTreeClassifier:
-    y = data[:, 0]
-    x = data[:, 1:]
-    return train(x, y)
-
-
-def train_to_predict_move(data: np.array) -> Optional[DecisionTreeClassifier]:
-    y = np.array(tuple(compress(data[:, -1], data[:, 0])))
-    x = np.array(tuple(compress(data[:, 1:-1], data[:, 0])))
-    if len(np.unique(y)) != n_moves:
-        return
-    return train(x, y)
+def train_to_predict_move(model, data: list[np.array]):
+    try:
+        train, test = train_test_split(tuple(filter(len, data)), test_size=0.2)
+    except ValueError:
+        return model, 0.5
+    y_train, x_train = np.concatenate(train)[:, 0], np.concatenate(train)[:, 1:]
+    y_test, x_test = np.concatenate(test)[:, 0], np.concatenate(test)[:, 1:]
+    model.fit(x_train, y_train)
+    return model, model.score(x_test, y_test)
