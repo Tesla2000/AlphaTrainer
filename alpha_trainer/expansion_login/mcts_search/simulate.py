@@ -1,7 +1,7 @@
 import random
 
-from alpha_trainer.classes.AlphaMove import AlphaMove
-from alpha_trainer.classes.AlphaTrainableGame import (
+from alpha_classes import AlphaMove
+from alpha_classes.AlphaTrainableGame import (
     AlphaTrainableGame,
     AlphaGameResults,
 )

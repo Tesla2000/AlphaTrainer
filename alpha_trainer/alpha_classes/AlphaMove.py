@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from alpha_trainer.classes.AlphaTrainableGame import (
+from alpha_classes import (
     AlphaTrainableGame,
 )
 

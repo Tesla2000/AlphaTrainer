@@ -1,12 +1,12 @@
 from abc import abstractmethod, ABC
 from typing import Sequence, TYPE_CHECKING, Self
 
-from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
+from alpha_classes import AlphaGameResult
 
-from alpha_trainer.classes.AlphaPlayer import AlphaPlayer
+from alpha_classes import AlphaPlayer
 
 if TYPE_CHECKING:
-    from alpha_trainer.classes.AlphaMove import AlphaMove
+    from alpha_classes import AlphaMove
 
 
 AlphaGameResults = dict[int, AlphaGameResult]
@@ -16,6 +16,9 @@ class AlphaTrainableGame(ABC):
     players: list
     current_player: AlphaPlayer
     players: Sequence[AlphaPlayer]
+
+    def __init__(self, *args, **kwargs):
+        pass
 
     @abstractmethod
     def copy(self) -> Self:

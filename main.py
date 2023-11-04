@@ -5,7 +5,7 @@ from statistics import mean
 import numpy as np
 from IPython import display
 from matplotlib import pyplot as plt
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from tqdm import tqdm
 
 from PySplendor.Game import Game
@@ -33,7 +33,7 @@ def main():
     results_dir = Path("results")
     results_dir.mkdir(exist_ok=True)
     files = tuple(results_dir.iterdir())
-    model = DecisionTreeClassifier()
+    model = RandomForestClassifier()
     scores, mean_scores, data = [], [], []
     max_number = 0
     if files:
@@ -57,7 +57,12 @@ def main():
 
     for i in tqdm(count(max_number + 1)):
         file_name = f"results_{i}.csv"
-        save_game_results(game_class, file_name, model=None, n_simulations=100)
+        save_game_results(
+            game_class,
+            file_name,
+            model=model if hasattr(model, "estimators_") else None,
+            n_simulations=50,
+        )
         data.append(np.loadtxt(f"results/results_{i}.csv", delimiter=",", dtype=int))
         model, score = train_to_predict_move(model, data)
         scores.append(score)

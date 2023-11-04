@@ -1,10 +1,11 @@
-from typing import Type
+from typing import Type, Callable
 
 import numpy as np
 
-from alpha_trainer.expansion_login.mcts_search import mcts_search
-from alpha_trainer.expansion_login.model_prediction import model_prediction
-from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
+from alpha_classes import AlphaMove
+from expansion_login.mcts_search import mcts_search
+from expansion_login.model_prediction import model_prediction
+from alpha_classes import AlphaTrainableGame
 
 StatesAndResults = dict[int, np.array]
 
@@ -15,6 +16,7 @@ def simulate_game(
     model=None,
     game_args: tuple = None,
     game_kwargs: dict = None,
+    choice_function: Callable[[dict[AlphaMove, float]], AlphaMove] = None,
 ) -> StatesAndResults:
     if not issubclass(game_class, AlphaTrainableGame):
         raise ValueError(f"Game class must be a subclass of AlphaTrainableGame")
@@ -24,7 +26,7 @@ def simulate_game(
     while not root.is_terminal():
         current_player_id = root.current_player.id
         root = (
-            model_prediction(root, model)
+            model_prediction(root, model, choice_function)
             if model
             else mcts_search(root, num_simulations)
         )

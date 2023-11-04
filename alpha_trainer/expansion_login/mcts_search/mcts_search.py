@@ -1,22 +1,26 @@
 from tqdm import tqdm
 
-from alpha_trainer.classes.AlphaTrainableGame import (
+from alpha_classes import (
     AlphaTrainableGame,
 )
-from .Node import Node
-from .backpropagate import backpropagate
-from .expand import expand
-from .select_best_child import select_best_child
-from .select_child import select_child
-from .simulate import simulate
+from Node import Node
+from backpropagate import backpropagate
+from expand import expand
+from select_best_child import select_best_child
+from select_child import select_child
+from simulate import simulate
 
 
 def mcts_search(
-    root_state: AlphaTrainableGame, num_simulations: int
+    root_state: AlphaTrainableGame, num_simulations: int, verbose=False
 ) -> AlphaTrainableGame:
     root_node = Node(root_state)
 
-    for _ in tqdm(range(num_simulations), desc="Processing", unit="iteration"):
+    for _ in (
+        tqdm(range(num_simulations), desc="Processing", unit="iteration")
+        if verbose
+        else range(num_simulations)
+    ):
         node = root_node
 
         # Selection
