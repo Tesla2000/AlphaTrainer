@@ -2,10 +2,10 @@ from typing import Type, Callable
 
 import numpy as np
 
-from src.alpha_classes import AlphaMove
-from src.expansion_login.mcts_search import mcts_search
-from src.expansion_login.model_prediction import model_prediction
-from src.alpha_classes import AlphaTrainableGame
+from src.alpha_trainer.alpha_classes import AlphaMove
+from .mcts_search import mcts_search
+from .model_prediction import model_prediction
+from src.alpha_trainer.alpha_classes import AlphaTrainableGame
 
 StatesAndResults = dict[np.array, float]
 

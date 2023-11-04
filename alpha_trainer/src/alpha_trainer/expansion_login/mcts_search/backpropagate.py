@@ -1,5 +1,5 @@
-from src.alpha_classes import AlphaGameResult
-from src.expansion_login.mcts_search.Node import Node
+from src.alpha_trainer.alpha_classes import AlphaGameResult
+from ...expansion_login.mcts_search.Node import Node
 
 
 def backpropagate(node: Node, results: dict[int, AlphaGameResult]) -> None:

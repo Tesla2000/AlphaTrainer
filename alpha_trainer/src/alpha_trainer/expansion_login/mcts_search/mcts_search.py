@@ -1,4 +1,4 @@
-from src.alpha_classes import (
+from src.alpha_trainer.alpha_classes import (
     AlphaTrainableGame,
 )
 from Node import Node

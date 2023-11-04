@@ -1,7 +1,7 @@
 import random
 from typing import Callable
 
-from src.alpha_classes import AlphaMove, AlphaTrainableGame
+from src.alpha_trainer.alpha_classes import AlphaMove, AlphaTrainableGame
 
 
 def model_prediction(

@@ -1,12 +1,12 @@
 from abc import abstractmethod, ABC
 from typing import Sequence, TYPE_CHECKING, Self
 
-from src.alpha_classes import AlphaGameResult
+from .AlphaGameResult import AlphaGameResult
 
-from src.alpha_classes import AlphaPlayer
+from .AlphaPlayer import AlphaPlayer
 
 if TYPE_CHECKING:
-    from src.alpha_classes import AlphaMove
+    from ..alpha_classes import AlphaMove
 
 
 AlphaGameResults = dict[int, AlphaGameResult]

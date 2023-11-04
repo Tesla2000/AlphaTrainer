@@ -1,10 +1,10 @@
 import random
 
-from src.alpha_classes import AlphaMove
-from src.alpha_classes.AlphaTrainableGame import (
+from src.alpha_trainer.alpha_classes import AlphaMove
+from src.alpha_trainer.alpha_classes import (
     AlphaTrainableGame,
-    AlphaGameResults,
 )
+from src.alpha_trainer.alpha_classes.AlphaTrainableGame import AlphaGameResults
 
 
 def simulate(state: AlphaTrainableGame) -> AlphaGameResults:

@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.alpha_classes import (
-    AlphaTrainableGame,
-)
+from .AlphaTrainableGame import AlphaTrainableGame
 
 
 class AlphaMove(ABC):

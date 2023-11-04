@@ -1,6 +1,6 @@
 from typing import Optional, Self
 
-from src.alpha_classes.AlphaTrainableGame import AlphaTrainableGame
+from src.alpha_trainer.alpha_classes import AlphaTrainableGame
 
 
 class Node:
