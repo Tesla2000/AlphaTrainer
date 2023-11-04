@@ -1,11 +1,3 @@
-from src.alpha_trainer.alpha_classes import (
-    AlphaGameResult,
-    AlphaMove,
-    AlphaPlayer,
-    AlphaTrainableGame,
-)
-from src.alpha_trainer.expansion_login.simulate_game import simulate_game
-
 __all__ = (
     "simulate_game",
     "AlphaGameResult",
@@ -13,3 +5,11 @@ __all__ = (
     "AlphaPlayer",
     "AlphaTrainableGame",
 )
+
+from alpha_trainer.src.alpha_trainer.alpha_classes import (
+    AlphaGameResult,
+    AlphaMove,
+    AlphaPlayer,
+    AlphaTrainableGame,
+)
+from alpha_trainer.src.alpha_trainer.expansion_login.simulate_game import simulate_game

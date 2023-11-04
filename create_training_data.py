@@ -2,9 +2,7 @@ import random
 from pathlib import Path
 from typing import Type
 
-from alpha_trainer import AlphaMove
-from alpha_trainer.expansion_login.simulate_games import simulate_game
-from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
+from alpha_trainer.src.alpha_trainer import AlphaTrainableGame, simulate_game, AlphaMove
 
 
 def save_game_results(

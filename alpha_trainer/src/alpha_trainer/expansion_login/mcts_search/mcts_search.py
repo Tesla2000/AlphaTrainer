@@ -1,12 +1,12 @@
-from src.alpha_trainer.alpha_classes import (
+from ...alpha_classes import (
     AlphaTrainableGame,
 )
-from Node import Node
-from backpropagate import backpropagate
-from expand import expand
-from select_best_child import select_best_child
-from select_child import select_child
-from simulate import simulate
+from .Node import Node
+from .backpropagate import backpropagate
+from .expand import expand
+from .select_best_child import select_best_child
+from .select_child import select_child
+from .simulate import simulate
 
 
 def mcts_search(

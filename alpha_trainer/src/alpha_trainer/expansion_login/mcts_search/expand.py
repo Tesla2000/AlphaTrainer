@@ -1,6 +1,6 @@
 import random
 
-from src.alpha_trainer.alpha_classes import AlphaMove
+from ...alpha_classes import AlphaMove
 from ...expansion_login.mcts_search.Node import Node
 
 
