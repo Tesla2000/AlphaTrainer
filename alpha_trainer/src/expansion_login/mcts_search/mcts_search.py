@@ -1,6 +1,4 @@
-from tqdm import tqdm
-
-from alpha_classes import (
+from src.alpha_classes import (
     AlphaTrainableGame,
 )
 from Node import Node
@@ -12,15 +10,11 @@ from simulate import simulate
 
 
 def mcts_search(
-    root_state: AlphaTrainableGame, num_simulations: int, verbose=False
+    root_state: AlphaTrainableGame, num_simulations: int
 ) -> AlphaTrainableGame:
     root_node = Node(root_state)
 
-    for _ in (
-        tqdm(range(num_simulations), desc="Processing", unit="iteration")
-        if verbose
-        else range(num_simulations)
-    ):
+    for _ in range(num_simulations):
         node = root_node
 
         # Selection

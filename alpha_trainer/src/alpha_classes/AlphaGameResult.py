@@ -1,8 +1,9 @@
+from abc import ABC
 from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class AlphaGameResult:
+class AlphaGameResult(ABC):
     value: float
 
     def __post_init__(self):

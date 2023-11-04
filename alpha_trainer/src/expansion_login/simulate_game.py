@@ -2,12 +2,12 @@ from typing import Type, Callable
 
 import numpy as np
 
-from alpha_classes import AlphaMove
-from expansion_login.mcts_search import mcts_search
-from expansion_login.model_prediction import model_prediction
-from alpha_classes import AlphaTrainableGame
+from src.alpha_classes import AlphaMove
+from src.expansion_login.mcts_search import mcts_search
+from src.expansion_login.model_prediction import model_prediction
+from src.alpha_classes import AlphaTrainableGame
 
-StatesAndResults = dict[int, np.array]
+StatesAndResults = dict[np.array, float]
 
 
 def simulate_game(
@@ -20,6 +20,8 @@ def simulate_game(
 ) -> StatesAndResults:
     if not issubclass(game_class, AlphaTrainableGame):
         raise ValueError(f"Game class must be a subclass of AlphaTrainableGame")
+    if num_simulations is None and model is None:
+        raise ValueError("Either model or number_of_simulations must be provided")
     states = {}
     root = game_class(*(game_args or ()), **(game_kwargs or {}))
     states[root.get_state()] = root.current_player.id

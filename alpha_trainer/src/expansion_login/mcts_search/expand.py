@@ -1,7 +1,7 @@
 import random
 
-from alpha_classes import AlphaMove
-from expansion_login.mcts_search.Node import Node
+from src.alpha_classes import AlphaMove
+from src.expansion_login.mcts_search.Node import Node
 
 
 def expand(node: Node) -> Node:
