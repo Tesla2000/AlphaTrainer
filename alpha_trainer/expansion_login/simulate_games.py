@@ -16,6 +16,8 @@ def simulate_game(
     game_args: tuple = None,
     game_kwargs: dict = None,
 ) -> StatesAndResults:
+    if not issubclass(game_class, AlphaTrainableGame):
+        raise ValueError(f"Game class must be a subclass of AlphaTrainableGame")
     states = {}
     root = game_class(*(game_args or ()), **(game_kwargs or {}))
     states[root.get_state()] = root.current_player.id

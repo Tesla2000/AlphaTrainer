@@ -9,6 +9,10 @@ def model_prediction(
     state: AlphaTrainableGame,
     model,
 ) -> AlphaTrainableGame:
+    if not isinstance(state, AlphaTrainableGame):
+        raise ValueError(
+            f"State must be an instance of AlphaTrainableGame is {type(state)}"
+        )
     probabilities = []
     possible_actions = state.get_possible_actions()
     for action in possible_actions:

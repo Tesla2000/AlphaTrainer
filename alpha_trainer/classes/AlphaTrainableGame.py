@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Sequence, Any, TYPE_CHECKING, Self
+from typing import Sequence, TYPE_CHECKING, Self
 
 from alpha_trainer.classes.AlphaGameResult import AlphaGameResult
 
@@ -13,7 +13,6 @@ AlphaGameResults = dict[int, AlphaGameResult]
 
 
 class AlphaTrainableGame(ABC):
-    current_player: Any
     players: list
     current_player: AlphaPlayer
     players: Sequence[AlphaPlayer]
