@@ -2,7 +2,8 @@ from typing import Type
 
 import numpy as np
 
-from GameLogic.MCTS import mcts_search
+from alpha_trainer.expansion_login.mcts_search import mcts_search
+from alpha_trainer.expansion_login.model_prediction import model_prediction
 from alpha_trainer.classes.AlphaTrainableGame import AlphaTrainableGame
 
 StatesAndResults = dict[int, np.array]
@@ -19,8 +20,13 @@ def simulate_game(
     root = game_class(*(game_args or ()), **(game_kwargs or {}))
     states[root.get_state()] = root.current_player.id
     while not root.is_terminal():
-        root = mcts_search(root, num_simulations)
-        states[root.get_state()] = root.current_player.id
+        current_player_id = root.current_player.id
+        root = (
+            model_prediction(root, model)
+            if model
+            else mcts_search(root, num_simulations)
+        )
+        states[root.get_state()] = current_player_id
     return score_positions(root, states)
 
 
